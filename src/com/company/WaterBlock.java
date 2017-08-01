@@ -15,30 +15,6 @@ public class WaterBlock {
     }
 
     private static int getSum(List<Integer> x) {
-        int[] leftMax = new int[x.size()];
-        int[] rightMax = new int[x.size()];
-        int currentMax = 0;
-        for (int i = 0; i < x.size(); i++) {
-            if (x.get(i) > currentMax) {
-                currentMax = x.get(i);
-            }
-            leftMax[i] = currentMax;
-        }
-        System.out.println("");
-        currentMax = 0;
-        for (int i = x.size() - 1; i >=0; i--) {
-            if (x.get(i) > currentMax) {
-                currentMax = x.get(i);
-            }
-            rightMax[i] = currentMax;
-        }
-        int result = 0;
-        for (int i = 0; i < x.size(); i++) {
-            if (leftMax[i] > x.get(i) && rightMax[i] > x.get(i)) {
-                result += (leftMax[i] > rightMax[i]? (rightMax[i] - x.get(i)):(leftMax[i]) - x.get(i));
-            }
-        }
-        System.out.println(result);
-        return result;
+        return -1;
     }
 }
