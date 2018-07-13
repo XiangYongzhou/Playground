@@ -38,17 +38,27 @@ public class Pagination {
         int counter = 0;
         while (allId.size() > 0) {
             LinkedList<Integer> uids = new LinkedList<>(uidMap.keySet()) ;
-            if (uids.size() < num) {
-                for (int uid:uids) {
-                    LinkedList<Integer> listingIds = uidMap.get(uid);
-                    Integer index = listingIds.pop();
-                    outputString.add(results[index]);
-                    if (listingIds.size() == 0) {
-                        uidMap.remove(uid);
-                    }
-                    allId.remove(index);
-                    counter++;
+            HashMap<Integer, Integer> lookupMap = new HashMap<>();
+            List<Integer> indexList = new ArrayList<>();
+            for (int uid:uids) {
+                Integer index = uidMap.get(uid).peek();
+                lookupMap.put(index, uid);
+                indexList.add(index);
+            }
+            Collections.sort(indexList);
+            int stopCondition = uids.size() < num ? uids.size():num;
+            while (counter < stopCondition) {
+                int uid = lookupMap.get(indexList.get(counter));
+                LinkedList<Integer> listingIds = uidMap.get(uid);
+                Integer index = listingIds.pop();
+                outputString.add(results[index]);
+                if (listingIds.size() == 0) {
+                    uidMap.remove(uid);
                 }
+                allId.remove(index);
+                counter++;
+            }
+            if (counter < num) {
                 List<Integer> removeList = new ArrayList<>();
                 for (Integer index:allId.keySet()) {
                     outputString.add(results[index]);
@@ -67,29 +77,9 @@ public class Pagination {
                     }
                     allId.remove(index);
                 }
-            } else {
-                HashMap<Integer, Integer> lookupMap = new HashMap<>();
-                List<Integer> indexList = new ArrayList<>();
-                for (int uid:uids) {
-                    Integer index = uidMap.get(uid).peek();
-                    lookupMap.put(index, uid);
-                    indexList.add(index);
-                }
-                Collections.sort(indexList);
-                while (counter < num) {
-                    int uid = lookupMap.get(indexList.get(counter));
-                    LinkedList<Integer> listingIds = uidMap.get(uid);
-                    Integer index = listingIds.pop();
-                    outputString.add(results[index]);
-                    if (listingIds.size() == 0) {
-                        uidMap.remove(uid);
-                    }
-                    allId.remove(index);
-                    counter++;
-                }
             }
-            if (counter == num) {
-                outputString.add("\"\", # this is a page separator");
+            if (counter == num && allId.size() > 0) {
+                outputString.add("");
             }
             counter = 0;
         }
@@ -140,17 +130,20 @@ public class Pagination {
 
     public static void main(String[] args) throws IOException {
         List<String> info = new ArrayList<>();
-        info.add("1,3,500,a");
-        info.add("2,4,400,b");
-        info.add("3,5,300,c");
-        info.add("4,6,200,d");
-        info.add("5,7,100,e");
-        info.add("1,8,99,f");
-        info.add("1,9,98,g");
-        info.add("3,10,97,h");
-        info.add("3,11,96,i");
-        info.add("3,12,95,i");
-        String[] sorted = paginate(1, info.toArray(new String[info.size()]));
+        info.add("1,28,300.6,San Francisco");
+        info.add("4,5,209.1,San Francisco");
+        info.add("20,7,203.4,Oakland");
+        info.add("6,8,202.9,San Francisco");
+        info.add("6,10,199.8,San Francisco");
+        info.add("1,16,190.5,San Francisco");
+        info.add("6,29,185.3,San Francisco");
+        info.add("7,20,180.0,Oakland");
+        info.add("6,21,162.2,San Francisco");
+        info.add("2,18,161.7,San Jose");
+        info.add("2,30,149.8,San Jose");
+        info.add("3,76,146.7,San Francisco");
+        info.add("2,14,141.8,San Jose");
+        String[] sorted = paginate(5, info.toArray(new String[info.size()]));
         for (String sentence:sorted) {
             System.out.println(sentence);
         }

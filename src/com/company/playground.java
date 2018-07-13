@@ -3,6 +3,7 @@ package com.company;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -10,20 +11,15 @@ import java.util.List;
  */
 public class playground {
 
+    static class Solution {
+        public int lengthOfLongestSubstring(String s) {
+            return -1;
+        }
+    }
+
     public static void main(String[] args) {
         // write your code here
-        try {
-            FileInputStream fstream = new FileInputStream("yourMesh.obj");
-            BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-            String strLine;
-            PrintWriter writer = new PrintWriter("result.obj", "UTF-8");
-            while ((strLine = br.readLine()) != null) {
+        Solution solution = new Solution();
 
-            }
-            br.close();
-            writer.close();
-        } catch (Exception e) {
-
-        }
     }
 }
